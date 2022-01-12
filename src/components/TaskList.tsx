@@ -14,16 +14,56 @@ export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
+
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+
+    console.log('handleCreateNewTask');
+
+    let tarefas :Task[] = [
+        ...tasks,
+        {
+          id: Math.random(),
+          title: newTaskTitle,
+          isComplete: false
+        }
+      ];
+
+    console.log(tarefas)
+
+    setTasks(tarefas);
+
   }
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+
+    console.log('check complete');
+
+    let newTasks :Task[] = [];
+
+    tasks.map(task => {
+      id === task.id ? task.isComplete = !task.isComplete : '';
+      newTasks.push(task);
+    });
+
+    setTasks(newTasks);
+
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+
+    console.log('remove item', id);
+
+    let newTasks :Task[] = [];
+
+    tasks.map(task => {
+      id !== task.id ? newTasks.push(task) : '';
+    });
+
+    setTasks(newTasks);
+
   }
 
   return (
@@ -32,9 +72,9 @@ export function TaskList() {
         <h2>Minhas tasks</h2>
 
         <div className="input-group">
-          <input 
-            type="text" 
-            placeholder="Adicionar novo todo" 
+          <input
+            type="text"
+            placeholder="Adicionar novo todo"
             onChange={(e) => setNewTaskTitle(e.target.value)}
             value={newTaskTitle}
           />
@@ -50,7 +90,7 @@ export function TaskList() {
             <li key={task.id}>
               <div className={task.isComplete ? 'completed' : ''} data-testid="task" >
                 <label className="checkbox-container">
-                  <input 
+                  <input
                     type="checkbox"
                     readOnly
                     checked={task.isComplete}
@@ -66,7 +106,7 @@ export function TaskList() {
               </button>
             </li>
           ))}
-          
+
         </ul>
       </main>
     </section>
